@@ -95,10 +95,15 @@
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
     gradient.addColorStop(0, '#111747'); gradient.addColorStop(.62, '#4a3271'); gradient.addColorStop(1, '#dd6f8d');
     ctx.fillStyle = gradient; ctx.fillRect(0, 0, width, height);
-    ctx.save(); ctx.globalAlpha = .12; ctx.fillStyle = '#fff'; ctx.font = '900 52px system-ui';
-    for (let x = -((cameraX * .18) % 560) - 100; x < width + 600; x += 560) {
-      ctx.fillText('YANNIE ♥ KELVIN', x, height * .25 + Math.sin(time * .0005 + x) * 14);
-    }
+    ctx.save();
+    ctx.globalAlpha = .16;
+    ctx.fillStyle = '#fff';
+    ctx.font = `900 ${clamp(width / 11.5, 28, 62)}px system-ui`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.shadowColor = 'rgba(255, 163, 200, .75)';
+    ctx.shadowBlur = 18;
+    ctx.fillText('YANNIE ♥ KELVIN', width / 2, height * .25);
     ctx.restore();
     ctx.fillStyle = 'rgba(255,255,255,.65)';
     for (let index = 0; index < 42; index += 1) {
