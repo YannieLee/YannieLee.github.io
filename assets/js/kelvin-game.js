@@ -1,14 +1,17 @@
 (() => {
   'use strict';
 
-  const HEART_COUNT = 7;
+  const STAGES = ['I', 'LOVE', 'YOU'];
+  const HEARTS_PER_STAGE = 3;
   const messages = [
     'You make ordinary days feel special.',
     'Your smile is one of my favourite places.',
     'Thank you for every little moment.',
     'Life is brighter with you in it.',
+    'You make my world feel warmer.',
     'I hope this year is gentle with you.',
     'I will always be cheering for you.',
+    'You are my favourite adventure.',
     'Happy birthday, my favourite human. ♡'
   ];
 
@@ -24,6 +27,8 @@
   const score = document.querySelector('#kelvin-score');
   const message = document.querySelector('#kelvin-message');
   const help = document.querySelector('#kelvin-help');
+  const stageWord = document.querySelector('#kelvin-word');
+  const centerMessage = document.querySelector('#kelvin-center-message');
   const context = canvas.getContext('2d');
   const keys = new Set();
   const player = { x: 0, y: 0, size: 28, speed: 245 };
@@ -32,6 +37,9 @@
   let stars = [];
   let running = false;
   let collected = 0;
+  let stageIndex = 0;
+  let stageCollected = 0;
+  let changingStage = false;
   let lastTime = 0;
   let frame = 0;
 
@@ -74,9 +82,12 @@
   function createHearts() {
     const rect = stage.getBoundingClientRect();
     const margin = 58;
-    const positions = [
-      [.13, .18], [.5, .12], [.84, .22], [.24, .51], [.72, .48], [.12, .79], [.82, .78]
+    const stagePositions = [
+      [[.22, .2], [.78, .3], [.28, .76]],
+      [[.15, .24], [.83, .2], [.22, .76]],
+      [[.18, .22], [.8, .35], [.72, .78]]
     ];
+    const positions = stagePositions[stageIndex];
     hearts = positions.map(([x, y], index) => ({
       x: Math.max(margin, Math.min(rect.width - margin, rect.width * x + random(-18, 18))),
       y: Math.max(margin, Math.min(rect.height - margin, rect.height * y + random(-12, 12))),
@@ -179,16 +190,42 @@
   }
 
   function collectHeart(heart) {
+    if (changingStage) return;
     heart.collected = true;
     collected += 1;
-    score.textContent = `${collected} / ${HEART_COUNT}`;
+    stageCollected += 1;
+    score.textContent = `${stageCollected} / ${HEARTS_PER_STAGE}`;
     message.textContent = messages[collected - 1];
+    centerMessage.textContent = messages[collected - 1];
+    centerMessage.classList.remove('show');
+    void centerMessage.offsetWidth;
+    centerMessage.classList.add('show');
     message.classList.remove('pop');
     requestAnimationFrame(() => message.classList.add('pop'));
     setTimeout(() => message.classList.remove('pop'), 350);
     burst(heart.x, heart.y);
     if (navigator.vibrate) navigator.vibrate(35);
-    if (collected === HEART_COUNT) setTimeout(showSurprise, 900);
+    if (stageCollected === HEARTS_PER_STAGE) {
+      changingStage = true;
+      if (stageIndex === STAGES.length - 1) {
+        setTimeout(showSurprise, 2400);
+      } else {
+        setTimeout(nextStage, 2400);
+      }
+    }
+  }
+
+  function nextStage() {
+    stageWord.classList.add('change');
+    setTimeout(() => {
+      stageIndex += 1;
+      stageCollected = 0;
+      stageWord.textContent = STAGES[stageIndex];
+      score.textContent = `0 / ${HEARTS_PER_STAGE}`;
+      createHearts();
+      stageWord.classList.remove('change');
+      changingStage = false;
+    }, 360);
   }
 
   function update(delta) {
@@ -224,7 +261,11 @@
     intro.hidden = true;
     game.hidden = false;
     collected = 0;
-    score.textContent = `0 / ${HEART_COUNT}`;
+    stageIndex = 0;
+    stageCollected = 0;
+    changingStage = false;
+    stageWord.textContent = STAGES[0];
+    score.textContent = `0 / ${HEARTS_PER_STAGE}`;
     requestAnimationFrame(() => {
       resizeCanvas();
       const rect = stage.getBoundingClientRect();

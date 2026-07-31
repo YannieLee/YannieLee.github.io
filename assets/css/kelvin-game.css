@@ -75,6 +75,39 @@
 .kelvin-skip { border: 0; color: #c7c2d9; background: transparent; text-decoration: underline; cursor: pointer; }
 .kelvin-stage { position: relative; height: min(590px, calc(100vh - 15rem)); min-height: 390px; }
 #kelvin-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.kelvin-word {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, .055);
+  font-size: clamp(7rem, 28vw, 18rem);
+  font-weight: 950;
+  letter-spacing: .06em;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity .35s ease, transform .35s ease;
+}
+.kelvin-word.change { opacity: 0; transform: translate(-50%, -50%) scale(.75); }
+.kelvin-center-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 4;
+  width: min(34rem, 86%);
+  transform: translate(-50%, -50%) scale(.82);
+  color: #fff;
+  font-size: clamp(1.3rem, 4.5vw, 2.5rem);
+  font-weight: 850;
+  line-height: 1.2;
+  text-align: center;
+  text-wrap: balance;
+  text-shadow: 0 3px 18px #090916, 0 0 28px rgba(255, 62, 115, .85);
+  opacity: 0;
+  pointer-events: none;
+}
+.kelvin-center-message.show { animation: kelvin-message-reveal 2.35s ease both; }
 .kelvin-help { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); width: max-content; max-width: 90%; padding: .45rem .8rem; border-radius: 999px; color: #d9d5ea; background: rgba(9,9,22,.72); font-size: .78rem; pointer-events: none; transition: opacity .5s; }
 .kelvin-help.fade { opacity: 0; }
 .kelvin-help kbd { padding: .1rem .3rem; color: white; border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.1); }
@@ -117,6 +150,11 @@
 @keyframes kelvin-beat { 50% { transform: scale(.86); } }
 @keyframes kelvin-drift { to { transform: translateY(47px); } }
 @keyframes kelvin-flame { to { transform: translateY(-2px) scale(.88); } }
+@keyframes kelvin-message-reveal {
+  0% { opacity: 0; transform: translate(-50%, -42%) scale(.82); }
+  15%, 72% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -58%) scale(1.05); }
+}
 
 @media (max-width: 720px), (pointer: coarse) {
   .kelvin-world { min-height: calc(100svh - 5rem); border-radius: 18px; }
@@ -132,4 +170,5 @@
 @media (prefers-reduced-motion: reduce) {
   .kelvin-stars, .kelvin-stars::before, .kelvin-stars::after, .kelvin-pixel-heart, .kelvin-cake i::before { animation: none; }
   .kelvin-primary { transition: none; }
+  .kelvin-center-message.show { animation-duration: 1.6s; }
 }

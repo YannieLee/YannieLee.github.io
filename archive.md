@@ -29,7 +29,9 @@ comments: false
       <button class="kelvin-skip" id="kelvin-skip" type="button">Skip game</button>
     </header>
     <div class="kelvin-stage" id="kelvin-stage">
-      <canvas id="kelvin-canvas" aria-label="Move the little fox and collect seven hearts"></canvas>
+      <canvas id="kelvin-canvas" aria-label="Move the little fox and collect hearts through three chapters: I, Love, and You"></canvas>
+      <div class="kelvin-word" id="kelvin-word" aria-hidden="true">I</div>
+      <div class="kelvin-center-message" id="kelvin-center-message" aria-live="polite"></div>
       <div class="kelvin-help" id="kelvin-help">Use <kbd>WASD</kbd> or <kbd>arrow keys</kbd> to move</div>
     </div>
     <div class="kelvin-controls" aria-label="Touch controls">
