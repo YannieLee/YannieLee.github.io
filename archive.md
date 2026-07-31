@@ -1,7 +1,7 @@
 ---
 layout: page
 title: For Kelvin
-permalink: /kelvin/
+permalink: /lovekelvin/
 sitemap: false
 noindex: true
 comments: false
