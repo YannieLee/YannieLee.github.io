@@ -1,179 +1,73 @@
 ---
 layout: page
-title: Archive
+title: For Kelvin
 permalink: /kelvin/
 sitemap: false
 noindex: true
 comments: false
 ---
 
-<style>
-  .archive-lock {
-    max-width: 38rem;
-    margin: 2rem auto;
-  }
+<link rel="stylesheet" href="{{ '/assets/css/kelvin-game.css' | relative_url }}">
 
-  .archive-form {
-    display: flex;
-    gap: 0.75rem;
-  }
+<main class="kelvin-world" id="kelvin-world">
+  <section class="kelvin-intro" id="kelvin-intro" aria-labelledby="kelvin-title">
+    <div class="kelvin-stars" aria-hidden="true"></div>
+    <p class="kelvin-kicker">A tiny adventure made with love</p>
+    <h1 id="kelvin-title">Happy Birthday, Kelvin!</h1>
+    <p class="kelvin-intro-copy">There are seven little pieces of my heart hiding among the stars. Find them all to open your present.</p>
+    <div class="kelvin-pixel-heart" aria-hidden="true">♥</div>
+    <button class="kelvin-primary" id="kelvin-start" type="button">Start the adventure</button>
+  </section>
 
-  .archive-form input {
-    min-width: 0;
-    flex: 1;
-  }
+  <section class="kelvin-game" id="kelvin-game" hidden aria-label="Birthday heart collecting game">
+    <header class="kelvin-hud">
+      <div>
+        <span class="kelvin-hud-label">HEARTS</span>
+        <strong id="kelvin-score">0 / 7</strong>
+      </div>
+      <p id="kelvin-message" aria-live="polite">Go find the first heart ✦</p>
+      <button class="kelvin-skip" id="kelvin-skip" type="button">Skip game</button>
+    </header>
+    <div class="kelvin-stage" id="kelvin-stage">
+      <canvas id="kelvin-canvas" aria-label="Move the little fox and collect seven hearts"></canvas>
+      <div class="kelvin-help" id="kelvin-help">Use <kbd>WASD</kbd> or <kbd>arrow keys</kbd> to move</div>
+    </div>
+    <div class="kelvin-controls" aria-label="Touch controls">
+      <button data-direction="up" aria-label="Move up">▲</button>
+      <button data-direction="left" aria-label="Move left">◀</button>
+      <button data-direction="down" aria-label="Move down">▼</button>
+      <button data-direction="right" aria-label="Move right">▶</button>
+    </div>
+  </section>
 
-  .archive-status {
-    min-height: 1.5rem;
-    margin-top: 0.75rem;
-  }
+  <section class="kelvin-surprise" id="kelvin-surprise" hidden aria-labelledby="surprise-title">
+    <canvas id="kelvin-fireworks" aria-hidden="true"></canvas>
+    <div class="kelvin-surprise-card">
+      <div class="kelvin-cake" aria-hidden="true">
+        <i></i><i></i><i></i>
+        <div class="kelvin-cake-top"></div>
+        <div class="kelvin-cake-base"></div>
+      </div>
+      <p class="kelvin-kicker">Quest complete!</p>
+      <h2 id="surprise-title">Happy Birthday, Kelvin ♡</h2>
+      <p>You found every piece. There is one more thing waiting for you.</p>
+      <button class="kelvin-primary" id="kelvin-open-letter" type="button">Open my letters</button>
+    </div>
+  </section>
 
-  .archive-entry {
-    margin: 2rem 0;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--main-border-color);
-  }
+  <section class="archive-lock" id="archive-lock" hidden aria-labelledby="archive-heading">
+    <div class="archive-seal" aria-hidden="true">♥</div>
+    <p class="kelvin-kicker">Our private corner</p>
+    <h2 id="archive-heading">Letters for Kelvin</h2>
+    <p>Enter our shared passphrase. The letters are decrypted only on this device.</p>
+    <form class="archive-form" id="archive-form">
+      <input class="form-control" id="archive-password" type="password" autocomplete="current-password" placeholder="Passphrase" required>
+      <button class="kelvin-primary" type="submit">Unlock</button>
+    </form>
+    <p class="archive-status" id="archive-status" role="status" aria-live="polite"></p>
+  </section>
 
-  .archive-entry time {
-    color: var(--text-muted-color);
-    font-size: 0.9rem;
-  }
+  <section class="archive-entries" id="archive-entries" hidden></section>
+</main>
 
-  .archive-entry-body {
-    margin-top: 1rem;
-    white-space: pre-wrap;
-  }
-</style>
-
-<section class="archive-lock" aria-labelledby="archive-heading">
-  <h1 id="archive-heading">Private Archive</h1>
-  <p>Enter the shared passphrase to unlock this archive on your device.</p>
-  <form class="archive-form" id="archive-form">
-    <input
-      class="form-control"
-      id="archive-password"
-      type="password"
-      autocomplete="current-password"
-      placeholder="Passphrase"
-      required
-    >
-    <button class="btn btn-primary" type="submit">Unlock</button>
-  </form>
-  <p class="archive-status" id="archive-status" role="status" aria-live="polite"></p>
-</section>
-
-<section id="archive-entries" hidden></section>
-
-<script>
-  (() => {
-    if (location.protocol === 'http:' && !['localhost', '127.0.0.1'].includes(location.hostname)) {
-      location.replace(`https://${location.host}${location.pathname}${location.search}${location.hash}`);
-      return;
-    }
-
-    const AUTH_DATA = new TextEncoder().encode('private-archive-v1');
-    const form = document.querySelector('#archive-form');
-    const passwordInput = document.querySelector('#archive-password');
-    const status = document.querySelector('#archive-status');
-    const entriesContainer = document.querySelector('#archive-entries');
-
-    const decodeBase64 = (value) => {
-      const binary = atob(value);
-      return Uint8Array.from(binary, (character) => character.charCodeAt(0));
-    };
-
-    const renderEntries = (entries) => {
-      entriesContainer.replaceChildren();
-
-      for (const entry of entries) {
-        const article = document.createElement('article');
-        article.className = 'archive-entry';
-
-        const heading = document.createElement('h2');
-        heading.textContent = entry.title;
-
-        const time = document.createElement('time');
-        time.dateTime = entry.createdAt;
-        time.textContent = new Intl.DateTimeFormat(undefined, {
-          dateStyle: 'long'
-        }).format(new Date(entry.createdAt));
-
-        const body = document.createElement('div');
-        body.className = 'archive-entry-body';
-        body.textContent = entry.body;
-
-        article.append(heading, time, body);
-        entriesContainer.append(article);
-      }
-
-      entriesContainer.hidden = false;
-    };
-
-    const unlock = async (password) => {
-      if (!window.isSecureContext || !window.crypto?.subtle) {
-        throw new Error('secure-context');
-      }
-
-      const response = await fetch('/assets/data/archive.json', { cache: 'no-store' });
-      if (!response.ok) throw new Error('archive-unavailable');
-      const document = await response.json();
-
-      if (document.empty) throw new Error('archive-empty');
-
-      const material = await crypto.subtle.importKey(
-        'raw',
-        new TextEncoder().encode(password),
-        'PBKDF2',
-        false,
-        ['deriveKey']
-      );
-
-      const key = await crypto.subtle.deriveKey(
-        {
-          name: 'PBKDF2',
-          hash: document.kdf.hash,
-          salt: decodeBase64(document.kdf.salt),
-          iterations: document.kdf.iterations
-        },
-        material,
-        { name: 'AES-GCM', length: 256 },
-        false,
-        ['decrypt']
-      );
-
-      const plaintext = await crypto.subtle.decrypt(
-        {
-          name: 'AES-GCM',
-          iv: decodeBase64(document.cipher.iv),
-          additionalData: AUTH_DATA,
-          tagLength: document.cipher.tagLength
-        },
-        key,
-        decodeBase64(document.ciphertext)
-      );
-
-      return JSON.parse(new TextDecoder().decode(plaintext));
-    };
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      status.textContent = 'Unlocking…';
-
-      try {
-        const entries = await unlock(passwordInput.value);
-        renderEntries(entries);
-        form.hidden = true;
-        status.textContent = '';
-        passwordInput.value = '';
-      } catch (error) {
-        if (error.message === 'archive-empty') {
-          status.textContent = 'The archive has not been initialized yet.';
-        } else if (error.message === 'secure-context') {
-          status.textContent = 'Encrypted archives require HTTPS. Please reopen this page using https://.';
-        } else {
-          status.textContent = 'Unable to unlock the archive. Check the passphrase and try again.';
-        }
-      }
-    });
-  })();
-</script>
+<script src="{{ '/assets/js/kelvin-game.js' | relative_url }}"></script>
