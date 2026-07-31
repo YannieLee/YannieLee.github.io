@@ -45,12 +45,6 @@
   let animationFrame = 0;
   let finishQueued = false;
 
-  const birthdayParts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Singapore', month: '2-digit', day: '2-digit' })
-    .formatToParts(new Date()).reduce((value, part) => { if (part.type !== 'literal') value[part.type] = part.value; return value; }, {});
-  const isBirthdayPreview = new URLSearchParams(location.search).get('birthday-preview') === '1';
-  const isBirthday = (birthdayParts.month === '08' && birthdayParts.day === '01') || isBirthdayPreview;
-  if (isBirthday) { archiveLock.hidden = true; intro.hidden = false; }
-
   const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
   const random = (minimum, maximum) => minimum + Math.random() * (maximum - minimum);
 
