@@ -31,9 +31,9 @@ comments: false
       <div class="kelvin-help" id="kelvin-help">Move with <kbd>←</kbd><kbd>→</kbd> · Jump with <kbd>↑</kbd> or <kbd>Space</kbd></div>
     </div>
     <div class="kelvin-controls" aria-label="Touch controls">
+      <button class="kelvin-space-key" data-direction="jump" aria-label="Jump">SPACE</button>
       <button data-direction="left" aria-label="Move left">◀</button>
       <button data-direction="right" aria-label="Move right">▶</button>
-      <button class="kelvin-space-key" data-direction="jump" aria-label="Jump">SPACE</button>
     </div>
   </section>
 
