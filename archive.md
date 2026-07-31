@@ -81,6 +81,16 @@ comments: false
   </section>
 
   <section class="archive-entries" id="archive-entries" hidden></section>
+
+  <dialog class="latest-letter" id="latest-letter" aria-labelledby="latest-letter-title">
+    <div class="latest-letter-paper">
+      <p class="kelvin-kicker">The newest letter</p>
+      <h2 id="latest-letter-title"></h2>
+      <time id="latest-letter-date"></time>
+      <div class="latest-letter-body" id="latest-letter-body"></div>
+      <button class="kelvin-primary" id="latest-letter-close" type="button">Keep this letter</button>
+    </div>
+  </dialog>
 </main>
 
 <script src="{{ '/assets/js/kelvin-game.js' | relative_url }}"></script>
