@@ -26,6 +26,7 @@
   const cake = document.querySelector('#kelvin-cake');
   const finale = document.querySelector('#kelvin-finale');
   const openLetter = document.querySelector('#kelvin-open-letter');
+  const skyTitle = document.querySelector('#kelvin-sky-title');
   const wishInput = document.querySelector('#kelvin-wish');
   const blowButton = document.querySelector('#kelvin-blow');
   const blowHint = document.querySelector('#kelvin-blow-hint');
@@ -347,10 +348,12 @@
       const textAlpha=clamp((elapsed-3.35)/1.1,0,1)*clamp((8.7-elapsed)/.8,0,1);if(textAlpha>0){fx.save();fx.font=`900 ${fontSize}px system-ui`;fx.textAlign='center';fx.textBaseline='middle';fx.shadowColor='#ff7eb3';fx.shadowBlur=26;const gradient=fx.createLinearGradient(rect.width*.2,0,rect.width*.8,0);gradient.addColorStop(0,`rgba(255,226,122,${textAlpha})`);gradient.addColorStop(.48,`rgba(255,245,255,${textAlpha})`);gradient.addColorStop(.52,`rgba(255,111,164,${textAlpha})`);gradient.addColorStop(1,`rgba(202,154,255,${textAlpha})`);fx.fillStyle=gradient;fx.fillText(phrase,rect.width/2,textTop+buffer.height/2);fx.restore()}
       fx.shadowBlur=0;fx.globalCompositeOperation='source-over';if(elapsed<9)requestAnimationFrame(animate)
     }
-    requestAnimationFrame(animate);setTimeout(()=>{openLetter.hidden=false},6500);
+    requestAnimationFrame(animate);
+    setTimeout(()=>{skyTitle.hidden=false},3900);
+    setTimeout(()=>{openLetter.hidden=false},6500);
   }
 
-  openLetter.addEventListener('click',()=>{surprise.hidden=true;archiveLock.hidden=false;document.querySelector('#archive-password').focus()});
+  openLetter.addEventListener('click',()=>{surprise.hidden=true;skyTitle.hidden=true;archiveLock.hidden=false;document.querySelector('#archive-password').focus()});
 
   const AUTH_DATA=new TextEncoder().encode('private-archive-v1');
   const form=document.querySelector('#archive-form');const passwordInput=document.querySelector('#archive-password');const status=document.querySelector('#archive-status');const entriesContainer=document.querySelector('#archive-entries');

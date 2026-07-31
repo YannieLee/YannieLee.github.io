@@ -59,9 +59,12 @@ comments: false
       <button class="kelvin-primary" id="kelvin-blow" type="button">Blow out the candles</button>
       <p class="kelvin-blow-hint" id="kelvin-blow-hint">Tap the button—or allow the microphone and blow gently.</p>
     </div>
+    <div class="kelvin-sky-title" id="kelvin-sky-title" hidden aria-label="Yannie loves Kelvin">
+      YANNIE <span>♥</span> KELVIN
+    </div>
     <div class="kelvin-finale" id="kelvin-finale" hidden>
-      <p>The stars always find their way back to us.</p>
-      <button class="kelvin-primary" id="kelvin-open-letter" type="button" hidden>Open my letters</button>
+      <p>No matter how far we are, my heart still finds you.</p>
+      <button class="kelvin-primary" id="kelvin-open-letter" type="button" hidden>Enter your little corner</button>
     </div>
   </section>
 
