@@ -3,8 +3,8 @@
 
   const STAR_COUNT = 7;
   const messages = [
-    '⭐ You made my heart skip a beat.',
-    '⭐ Then I started falling for you.',
+    '⭐ Your brilliant mind was the first thing that drew me in.',
+    '⭐ Then your face, sexy body, and endless talents made me fall even harder.',
     '⭐ Soon, I missed you every day.',
     '⭐ You quietly hacked into my heart.',
     '⭐ Distance only made me want you more.',
@@ -319,8 +319,9 @@
   function extinguishCandles() {
     if(surprise.classList.contains('night'))return;
     cake.classList.add('candles-out');blowButton.disabled=true;blowHint.textContent='Wish made ✦';
-    setTimeout(()=>{surprise.classList.add('night');cakeScene.classList.add('fade')},800);
-    setTimeout(()=>{cakeScene.hidden=true;finale.hidden=false;launchTextFireworks()},1800);
+    setTimeout(()=>{surprise.classList.add('night');cakeScene.classList.add('fade')},1600);
+    setTimeout(()=>{cakeScene.hidden=true},2150);
+    setTimeout(()=>{surprise.classList.add('stars-on');finale.hidden=false;launchTextFireworks()},2600);
   }
 
   function launchTextFireworks() {
@@ -361,7 +362,9 @@
   function renderFormattedText(container,text){container.replaceChildren();const fragments=text.split(/(\*\*[^*]+\*\*|\n)/g);for(const fragment of fragments){if(!fragment)continue;if(fragment==='\n'){container.append(document.createElement('br'))}else if(fragment.startsWith('**')&&fragment.endsWith('**')){const strong=document.createElement('strong');strong.textContent=fragment.slice(2,-2);container.append(strong)}else{container.append(document.createTextNode(fragment))}}}
   function formatLetterDate(value){return new Intl.DateTimeFormat(undefined,{dateStyle:'long'}).format(new Date(value))}
   function revealArchive(){entriesContainer.hidden=false}
-  function renderEntries(entries){const ordered=[...entries].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));entriesContainer.replaceChildren();for(const entry of ordered){const article=document.createElement('article');article.className='archive-entry';const heading=document.createElement('h2');heading.textContent=entry.title;const time=document.createElement('time');time.dateTime=entry.createdAt;time.textContent=formatLetterDate(entry.createdAt);const body=document.createElement('div');body.className='archive-entry-body';renderFormattedText(body,entry.body);article.append(heading,time,body);entriesContainer.append(article)}archiveLock.hidden=true;entriesContainer.hidden=true;if(!ordered.length){revealArchive();return}const newest=ordered[0];latestLetterTitle.textContent=newest.title;latestLetterDate.dateTime=newest.createdAt;latestLetterDate.textContent=formatLetterDate(newest.createdAt);renderFormattedText(latestLetterBody,newest.body);if(typeof latestLetter.showModal==='function')latestLetter.showModal();else revealArchive()}
+  function openArchivedLetter(entry){latestLetterTitle.textContent=entry.title;latestLetterDate.dateTime=entry.createdAt;latestLetterDate.textContent=formatLetterDate(entry.createdAt);renderFormattedText(latestLetterBody,entry.body);if(typeof latestLetter.showModal==='function')latestLetter.showModal()}
+  function letterPreview(text){const lines=text.split('\n').map(line=>line.trim()).filter(Boolean);const preview=lines.slice(0,3).join('\n');return lines.length>3?`${preview}\n…`:preview}
+  function renderEntries(entries){const ordered=[...entries].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));entriesContainer.replaceChildren();for(const entry of ordered){const article=document.createElement('article');article.className='archive-entry';const heading=document.createElement('h2');heading.textContent=entry.title;const time=document.createElement('time');time.dateTime=entry.createdAt;time.textContent=formatLetterDate(entry.createdAt);const body=document.createElement('div');body.className='archive-entry-body archive-entry-preview';renderFormattedText(body,letterPreview(entry.body));const readButton=document.createElement('button');readButton.className='archive-read-letter';readButton.type='button';readButton.textContent='Read letter';readButton.addEventListener('click',()=>openArchivedLetter(entry));article.append(heading,time,body,readButton);entriesContainer.append(article)}archiveLock.hidden=true;entriesContainer.hidden=true;if(!ordered.length){revealArchive();return}openArchivedLetter(ordered[0])}
   latestLetterClose.addEventListener('click',()=>latestLetter.close());latestLetter.addEventListener('close',revealArchive);
   async function unlock(password){if(!window.isSecureContext||!window.crypto?.subtle)throw new Error('secure-context');const response=await fetch('/assets/data/archive.json',{cache:'no-store'});if(!response.ok)throw new Error('archive-unavailable');const documentData=await response.json();if(documentData.empty)throw new Error('archive-empty');const material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveKey']);const key=await crypto.subtle.deriveKey({name:'PBKDF2',hash:documentData.kdf.hash,salt:decodeBase64(documentData.kdf.salt),iterations:documentData.kdf.iterations},material,{name:'AES-GCM',length:256},false,['decrypt']);const plaintext=await crypto.subtle.decrypt({name:'AES-GCM',iv:decodeBase64(documentData.cipher.iv),additionalData:AUTH_DATA,tagLength:documentData.cipher.tagLength},key,decodeBase64(documentData.ciphertext));return JSON.parse(new TextDecoder().decode(plaintext))}
   form.addEventListener('submit',async event=>{event.preventDefault();status.textContent='Unlocking…';try{renderEntries(await unlock(passwordInput.value));passwordInput.value=''}catch(error){status.textContent=error.message==='archive-empty'?'The archive has not been initialized yet.':error.message==='secure-context'?'Encrypted archives require HTTPS. Please reopen this page using https://.':'Unable to unlock the archive. Check the passphrase and try again.'}});

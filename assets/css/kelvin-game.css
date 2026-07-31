@@ -60,6 +60,18 @@
 @keyframes kelvin-soft-heart{50%{transform:scale(.9);opacity:.78}}
 @media(max-width:520px){.kelvin-sky-title{top:34%;letter-spacing:.045em}.kelvin-finale{bottom:2.1rem}.kelvin-finale p{max-width:19rem}.kelvin-finale .kelvin-primary{font-size:.84rem}}
 
+/* Compact archive previews and a clearly staged candle-to-night transition. */
+.archive-entry-preview{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3}
+.archive-read-letter{margin-top:.85rem;padding:.25rem 0;border:0;color:#ffc1d6;font-size:.82rem;font-weight:650;background:transparent;cursor:pointer}
+.archive-read-letter::after{content:"  →"}.archive-read-letter:hover{color:#fff;text-decoration:underline}
+.candles-out .kelvin-candles i:nth-child(2)::before{animation-delay:.18s}
+.candles-out .kelvin-candles i:nth-child(3)::before{animation-delay:.36s}
+#kelvin-cake.candles-out{animation:kelvin-cake-breeze .75s ease}
+@keyframes kelvin-cake-breeze{25%{transform:translateX(-2px) rotateY(-2deg)}60%{transform:translateX(2px) rotateY(2deg)}100%{transform:none}}
+.kelvin-surprise.night:not(.stars-on){background:#000;transition:background .5s ease}
+.kelvin-surprise.night::after{opacity:0;transition:opacity 1s ease}
+.kelvin-surprise.night.stars-on::after{opacity:.35}
+
 /* Private letter reveal and chronological archive. */
 .latest-letter{width:min(42rem,calc(100% - 1.5rem));max-height:min(82vh,760px);padding:0;overflow:visible;border:0;border-radius:26px;color:#392b39;background:transparent;box-shadow:0 30px 90px rgba(0,0,0,.55)}
 .latest-letter::backdrop{background:rgba(4,3,12,.78);backdrop-filter:blur(8px)}
