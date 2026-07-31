@@ -4,6 +4,10 @@ icon: fas fa-user-shield
 order: 5
 ---
 
+<style>
+  .anchor { display: none !important; }
+</style>
+
 # Privacy Notice
 
 This website uses **Waline** to provide its comment system. Comments are
