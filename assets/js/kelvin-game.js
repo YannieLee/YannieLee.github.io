@@ -3,13 +3,13 @@
 
   const STAR_COUNT = 7;
   const messages = [
-    'You make ordinary days feel special.',
-    'Your smile is one of my favourite places.',
-    'Thank you for every little moment.',
-    'Life is brighter with you in it.',
-    'You make my world feel warmer.',
-    'You are my favourite adventure.',
-    'Happy birthday, my favourite human. ♡'
+    '⭐ You made my heart skip a beat.',
+    '⭐ Then I started falling for you.',
+    '⭐ Soon, I missed you every day.',
+    '⭐ You quietly hacked into my heart.',
+    '⭐ Distance only made me want you more.',
+    '⭐ My heart keeps choosing you.',
+    '⭐ One day, I want every birthday beside you.'
   ];
   const intro = document.querySelector('#kelvin-intro');
   const game = document.querySelector('#kelvin-game');
