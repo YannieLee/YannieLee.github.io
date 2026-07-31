@@ -21,15 +21,7 @@ security questions emerging around AI and large language models.
 - Mistakes, failed approaches, and what they taught me
 - Experiments in AI and LLM security
 
-## Rules of engagement
 
-The hacker mindset is about understanding systems deeply, not harming people.
-Everything on this site is created for education, defensive research, CTFs, or
-testing performed with explicit authorization.
-
-```text
-learn -> test -> document -> defend
-```
 
 You can find my projects and ongoing work on
 [GitHub](https://github.com/YannieLee).
