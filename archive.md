@@ -26,7 +26,7 @@ comments: false
       <button class="kelvin-skip" id="kelvin-skip" type="button">Skip game</button>
     </header>
     <div class="kelvin-stage" id="kelvin-stage">
-      <canvas id="kelvin-canvas" aria-label="Help the little fox run, jump, and collect seven stars"></canvas>
+      <canvas id="kelvin-canvas" aria-label="Help the little pink pig run, jump, and collect seven stars"></canvas>
       <div class="kelvin-center-message" id="kelvin-center-message" aria-live="polite"></div>
       <div class="kelvin-help" id="kelvin-help">Move with <kbd>←</kbd><kbd>→</kbd> · Jump with <kbd>↑</kbd> or <kbd>Space</kbd></div>
     </div>

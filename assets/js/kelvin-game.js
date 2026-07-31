@@ -140,15 +140,20 @@
     for (let x = -((cameraX * .75) % 34); x < width; x += 34) ctx.fillRect(x, groundY + 17, 18, 5);
   }
 
-  function drawFox(time) {
+  function drawPig(time) {
     const x = player.x - cameraX + player.width / 2;
     const y = player.y + player.height / 2 + (player.grounded ? Math.sin(time * .014) * Math.min(1.5, Math.abs(player.vx) / 120) : 0);
     ctx.save(); ctx.translate(x, y); ctx.scale(player.facing, 1);
-    ctx.shadowColor = 'rgba(255,145,70,.45)'; ctx.shadowBlur = 11; ctx.fillStyle = '#f47b35';
-    ctx.beginPath(); ctx.moveTo(-18,-18);ctx.lineTo(-6,-11);ctx.lineTo(0,-20);ctx.lineTo(7,-11);ctx.lineTo(18,-18);ctx.lineTo(15,11);ctx.quadraticCurveTo(0,23,-15,11);ctx.closePath();ctx.fill();
-    ctx.shadowBlur=0;ctx.fillStyle='#fff0df';ctx.beginPath();ctx.moveTo(-13,2);ctx.quadraticCurveTo(-4,18,0,16);ctx.quadraticCurveTo(5,18,13,2);ctx.quadraticCurveTo(0,10,-13,2);ctx.fill();
-    ctx.fillStyle='#20172d';ctx.fillRect(-8,-3,3,3);ctx.fillRect(6,-3,3,3);ctx.fillRect(-2,11,4,3);
-    ctx.fillStyle='#d85f2c';ctx.beginPath();ctx.ellipse(-20,9,13,7,-.45,0,Math.PI*2);ctx.fill();
+    ctx.shadowColor='rgba(255,124,174,.5)';ctx.shadowBlur=12;ctx.fillStyle='#ff91bd';
+    ctx.beginPath();ctx.ellipse(0,2,18,17,0,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;ctx.fillStyle='#f67eaa';
+    ctx.beginPath();ctx.moveTo(-14,-10);ctx.lineTo(-18,-21);ctx.lineTo(-6,-15);ctx.closePath();ctx.fill();
+    ctx.beginPath();ctx.moveTo(14,-10);ctx.lineTo(18,-21);ctx.lineTo(6,-15);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#3b2037';ctx.beginPath();ctx.arc(-7,-3,2.1,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(7,-3,2.1,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#ffb3cf';ctx.beginPath();ctx.ellipse(0,7,9,6.5,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#a84c74';ctx.beginPath();ctx.ellipse(-3,7,1.6,2.2,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(3,7,1.6,2.2,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#ff91bd';ctx.lineWidth=3;ctx.beginPath();ctx.arc(-20,8,6,Math.PI*.2,Math.PI*1.8);ctx.stroke();
+    ctx.fillStyle='#dc6597';ctx.fillRect(-13,16,7,5);ctx.fillRect(6,16,7,5);
     ctx.restore();
   }
 
@@ -219,7 +224,7 @@
   function gameLoop(time) {
     if (!running) return;
     const delta = Math.min((time - lastTime) / 1000 || 0, .034); lastTime = time;
-    updatePlayer(delta); collectStars(time); drawSky(time); drawGround(); platforms.forEach(drawPlatform); stars.forEach(star => drawStar(star,time)); drawDust(delta); drawFox(time);
+    updatePlayer(delta); collectStars(time); drawSky(time); drawGround(); platforms.forEach(drawPlatform); stars.forEach(star => drawStar(star,time)); drawDust(delta); drawPig(time);
     animationFrame = requestAnimationFrame(gameLoop);
   }
 
