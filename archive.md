@@ -1,8 +1,9 @@
 ---
 layout: page
 title: Archive
-permalink: /norobots/archive/
+permalink: /kelvin/
 sitemap: false
+noindex: true
 comments: false
 ---
 
@@ -65,6 +66,11 @@ comments: false
 
 <script>
   (() => {
+    if (location.protocol === 'http:' && !['localhost', '127.0.0.1'].includes(location.hostname)) {
+      location.replace(`https://${location.host}${location.pathname}${location.search}${location.hash}`);
+      return;
+    }
+
     const AUTH_DATA = new TextEncoder().encode('private-archive-v1');
     const form = document.querySelector('#archive-form');
     const passwordInput = document.querySelector('#archive-password');
@@ -104,6 +110,10 @@ comments: false
     };
 
     const unlock = async (password) => {
+      if (!window.isSecureContext || !window.crypto?.subtle) {
+        throw new Error('secure-context');
+      }
+
       const response = await fetch('/assets/data/archive.json', { cache: 'no-store' });
       if (!response.ok) throw new Error('archive-unavailable');
       const document = await response.json();
@@ -156,9 +166,13 @@ comments: false
         status.textContent = '';
         passwordInput.value = '';
       } catch (error) {
-        status.textContent = error.message === 'archive-empty'
-          ? 'The archive has not been initialized yet.'
-          : 'Unable to unlock the archive.';
+        if (error.message === 'archive-empty') {
+          status.textContent = 'The archive has not been initialized yet.';
+        } else if (error.message === 'secure-context') {
+          status.textContent = 'Encrypted archives require HTTPS. Please reopen this page using https://.';
+        } else {
+          status.textContent = 'Unable to unlock the archive. Check the passphrase and try again.';
+        }
       }
     });
   })();
