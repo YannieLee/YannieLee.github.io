@@ -35,6 +35,23 @@
   let lastTime = 0;
   let frame = 0;
 
+  // The birthday adventure appears only on August 1 in Yannie's timezone.
+  // Using a fixed timezone keeps the surprise consistent wherever it is opened.
+  const singaporeDate = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Singapore',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date()).reduce((parts, part) => {
+    if (part.type !== 'literal') parts[part.type] = part.value;
+    return parts;
+  }, {});
+  const isKelvinBirthday = singaporeDate.month === '08' && singaporeDate.day === '01';
+
+  if (isKelvinBirthday) {
+    archiveLock.hidden = true;
+    intro.hidden = false;
+  }
+
   const random = (minimum, maximum) => minimum + Math.random() * (maximum - minimum);
 
   function resizeCanvas() {

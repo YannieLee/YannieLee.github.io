@@ -10,7 +10,7 @@ comments: false
 <link rel="stylesheet" href="{{ '/assets/css/kelvin-game.css' | relative_url }}">
 
 <main class="kelvin-world" id="kelvin-world">
-  <section class="kelvin-intro" id="kelvin-intro" aria-labelledby="kelvin-title">
+  <section class="kelvin-intro" id="kelvin-intro" hidden aria-labelledby="kelvin-title">
     <div class="kelvin-stars" aria-hidden="true"></div>
     <p class="kelvin-kicker">A tiny adventure made with love</p>
     <h1 id="kelvin-title">Happy Birthday, Kelvin!</h1>
@@ -55,7 +55,7 @@ comments: false
     </div>
   </section>
 
-  <section class="archive-lock" id="archive-lock" hidden aria-labelledby="archive-heading">
+  <section class="archive-lock" id="archive-lock" aria-labelledby="archive-heading">
     <div class="archive-seal" aria-hidden="true">♥</div>
     <p class="kelvin-kicker">Our private corner</p>
     <h2 id="archive-heading">Letters for Kelvin</h2>
