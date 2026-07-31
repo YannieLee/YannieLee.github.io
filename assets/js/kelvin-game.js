@@ -30,7 +30,7 @@
   const blowButton = document.querySelector('#kelvin-blow');
   const blowHint = document.querySelector('#kelvin-blow-hint');
   const keys = new Set();
-  const player = { x: 80, y: 0, width: 38, height: 42, vx: 0, vy: 0, grounded: false, facing: 1 };
+  const player = { x: 80, y: 0, width: 38, height: 42, vx: 0, vy: 0, grounded: true, airJumpUsed: false, facing: 1 };
   const worldWidth = 2920;
   let width = 0;
   let height = 0;
@@ -47,7 +47,8 @@
 
   const birthdayParts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Singapore', month: '2-digit', day: '2-digit' })
     .formatToParts(new Date()).reduce((value, part) => { if (part.type !== 'literal') value[part.type] = part.value; return value; }, {});
-  const isBirthday = birthdayParts.month === '08' && birthdayParts.day === '01';
+  const isBirthdayPreview = new URLSearchParams(location.search).get('birthday-preview') === '1';
+  const isBirthday = (birthdayParts.month === '08' && birthdayParts.day === '01') || isBirthdayPreview;
   if (isBirthday) { archiveLock.hidden = true; intro.hidden = false; }
 
   const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
@@ -56,22 +57,22 @@
   function buildLevel() {
     groundY = height - 30;
     platforms = [
-      { x: 300, y: groundY - 96, w: 180, h: 22 },
-      { x: 610, y: groundY - 165, w: 170, h: 22 },
-      { x: 900, y: groundY - 105, w: 210, h: 22 },
-      { x: 1240, y: groundY - 205, w: 190, h: 22 },
-      { x: 1540, y: groundY - 120, w: 170, h: 22 },
-      { x: 1830, y: groundY - 190, w: 215, h: 22 },
-      { x: 2180, y: groundY - 105, w: 190, h: 22 },
-      { x: 2490, y: groundY - 180, w: 210, h: 22 }
+      { x: 270, y: groundY - 78, w: 230, h: 22 },
+      { x: 570, y: groundY - 132, w: 230, h: 22 },
+      { x: 865, y: groundY - 82, w: 260, h: 22 },
+      { x: 1200, y: groundY - 155, w: 240, h: 22 },
+      { x: 1510, y: groundY - 90, w: 230, h: 22 },
+      { x: 1810, y: groundY - 145, w: 260, h: 22 },
+      { x: 2160, y: groundY - 80, w: 240, h: 22 },
+      { x: 2470, y: groundY - 135, w: 250, h: 22 }
     ];
     stars = [
-      { x: 390, y: groundY - 142 }, { x: 695, y: groundY - 212 },
-      { x: 1000, y: groundY - 152 }, { x: 1335, y: groundY - 252 },
-      { x: 1625, y: groundY - 167 }, { x: 1940, y: groundY - 238 },
-      { x: 2595, y: groundY - 228 }
+      { x: 385, y: groundY - 124 }, { x: 685, y: groundY - 179 },
+      { x: 995, y: groundY - 128 }, { x: 1320, y: groundY - 202 },
+      { x: 1625, y: groundY - 137 }, { x: 1940, y: groundY - 192 },
+      { x: 2595, y: groundY - 182 }
     ].map((star, index) => ({ ...star, radius: 18, phase: index * .73, found: false }));
-    player.x = 80; player.y = groundY - player.height; player.vx = 0; player.vy = 0;
+    player.x = 80; player.y = groundY - player.height; player.vx = 0; player.vy = 0; player.grounded = true; player.airJumpUsed = false;
   }
 
   function resizeGame() {
@@ -194,7 +195,7 @@
       if (overlaps && previousBottom <= platform.y + 7 && player.y + player.height >= platform.y && player.vy >= 0) landingY = Math.min(landingY, platform.y);
     }
     if (player.y + player.height >= landingY && previousBottom <= landingY + 7 && player.vy >= 0) {
-      player.y = landingY - player.height; player.vy = 0; player.grounded = true;
+      player.y = landingY - player.height; player.vy = 0; player.grounded = true; player.airJumpUsed = false;
     }
     if (player.y > height + 100) { player.y = groundY - player.height; player.x = Math.max(30, player.x - 160); player.vy = 0; }
     const desiredCamera = clamp(player.x - width * .34, 0, worldWidth - width);
@@ -202,7 +203,9 @@
   }
 
   function jump() {
-    if (player.grounded && running) { player.vy = -475; player.grounded = false; help.classList.add('fade'); }
+    if (!running || (!player.grounded && player.airJumpUsed)) return;
+    if (!player.grounded) player.airJumpUsed = true;
+    player.vy = -590; player.grounded = false; help.classList.add('fade');
   }
 
   function drawDust(delta) {
@@ -252,6 +255,16 @@
     const release=event=>{event.preventDefault();keys.delete(direction)};
     button.addEventListener('pointerdown',press);button.addEventListener('pointerup',release);button.addEventListener('pointercancel',release);button.addEventListener('pointerleave',release);
   });
+  let swipeStart = null;
+  canvas.addEventListener('pointerdown', event => { swipeStart = { x: event.clientX, y: event.clientY }; });
+  canvas.addEventListener('pointerup', event => {
+    if (!swipeStart) return;
+    const horizontal = event.clientX - swipeStart.x;
+    const vertical = event.clientY - swipeStart.y;
+    if (vertical < -28 && Math.abs(vertical) > Math.abs(horizontal) * .75) jump();
+    swipeStart = null;
+  });
+  canvas.addEventListener('pointercancel', () => { swipeStart = null; });
   document.querySelector('#kelvin-start').addEventListener('click',startGame);
   document.querySelector('#kelvin-skip').addEventListener('click',showCake);
 
@@ -291,15 +304,29 @@
   function launchTextFireworks() {
     const fireworks=document.querySelector('#kelvin-fireworks');const fx=fireworks.getContext('2d');const rect=surprise.getBoundingClientRect();const ratio=Math.min(devicePixelRatio||1,2);
     fireworks.width=Math.round(rect.width*ratio);fireworks.height=Math.round(rect.height*ratio);fx.setTransform(ratio,0,0,ratio,0,0);
-    const buffer=document.createElement('canvas');buffer.width=Math.min(1200,Math.round(rect.width));buffer.height=220;const bx=buffer.getContext('2d');
-    const fontSize=Math.max(25,Math.min(78,buffer.width/12.5));bx.font=`900 ${fontSize}px system-ui`;bx.textAlign='center';bx.textBaseline='middle';bx.fillStyle='#fff';bx.fillText('YANNIE ♥ KELVIN',buffer.width/2,buffer.height/2);
-    const pixels=bx.getImageData(0,0,buffer.width,buffer.height).data;const points=[];const step=rect.width<600?7:6;
-    for(let y=0;y<buffer.height;y+=step)for(let x=0;x<buffer.width;x+=step)if(pixels[(y*buffer.width+x)*4+3]>100)points.push({x:x+(rect.width-buffer.width)/2,y:y+rect.height*.27});
-    const origins=Array.from({length:7},()=>({x:random(rect.width*.15,rect.width*.85),y:random(rect.height*.18,rect.height*.58)}));
-    const particles=points.map((point,index)=>{const origin=origins[index%origins.length];return{x:origin.x,y:origin.y,tx:point.x,ty:point.y,vx:random(-2,2),vy:random(-2,2),delay:random(0,1.3),hue:index%3===0?45:index%3===1?340:285}});
-    let start=performance.now();
-    function animate(now){const elapsed=(now-start)/1000;fx.fillStyle='rgba(2,3,12,.22)';fx.fillRect(0,0,rect.width,rect.height);for(const p of particles){if(elapsed<p.delay)continue;const pull=Math.min(.085,(elapsed-p.delay)*.012);p.vx+=(p.tx-p.x)*pull;p.vy+=(p.ty-p.y)*pull;p.vx*=.82;p.vy*=.82;p.x+=p.vx;p.y+=p.vy;fx.fillStyle=`hsla(${p.hue},100%,72%,${Math.min(1,elapsed-p.delay)})`;fx.fillRect(p.x,p.y,2.4,2.4)}if(elapsed<7.5)requestAnimationFrame(animate)}
-    requestAnimationFrame(animate);setTimeout(()=>{openLetter.hidden=false},5200);
+    const phrase='YANNIE ♥ KELVIN';const fontSize=Math.max(26,Math.min(76,rect.width/12.3));
+    const buffer=document.createElement('canvas');buffer.width=Math.round(rect.width);buffer.height=Math.round(fontSize*1.7);const bx=buffer.getContext('2d');
+    bx.font=`900 ${fontSize}px system-ui`;bx.textAlign='center';bx.textBaseline='middle';bx.fillStyle='#fff';bx.fillText(phrase,buffer.width/2,buffer.height/2);
+    const pixels=bx.getImageData(0,0,buffer.width,buffer.height).data;const points=[];const step=rect.width<600?5:6;const textTop=rect.height*.31;
+    for(let y=0;y<buffer.height;y+=step)for(let x=0;x<buffer.width;x+=step)if(pixels[(y*buffer.width+x)*4+3]>110)points.push({x,y:y+textTop});
+    const particles=points.map((point,index)=>{const angle=index*.31+random(-.4,.4);const radius=random(Math.min(rect.width,rect.height)*.32,Math.max(rect.width,rect.height)*.72);return{sx:rect.width/2+Math.cos(angle)*radius,sy:rect.height*.43+Math.sin(angle)*radius*.62,tx:point.x,ty:point.y,angle,hue:[42,330,285][index%3],delay:random(.4,1.55)}});
+    const meteors=Array.from({length:7},(_,index)=>({
+      sx:index%2?-80:rect.width+80,sy:random(-100,rect.height*.2),
+      tx:rect.width*(.2+index*.1),ty:rect.height*(.3+Math.sin(index)*.12),delay:index*.17
+    }));
+    const ambient=Array.from({length:24},()=>({x:random(-rect.width,rect.width),y:random(-rect.height,rect.height*.8),speed:random(120,260),delay:random(3.8,7.5),length:random(35,90)}));
+    const start=performance.now();
+    const ease=value=>1-Math.pow(1-value,3);
+    function streak(x,y,length,alpha,hue=45){const gradient=fx.createLinearGradient(x-length,y-length*.55,x,y);gradient.addColorStop(0,'transparent');gradient.addColorStop(1,`hsla(${hue},100%,78%,${alpha})`);fx.strokeStyle=gradient;fx.lineWidth=2.2;fx.beginPath();fx.moveTo(x-length,y-length*.55);fx.lineTo(x,y);fx.stroke();fx.fillStyle=`hsla(${hue},100%,90%,${alpha})`;fx.beginPath();fx.arc(x,y,3.2,0,Math.PI*2);fx.fill()}
+    function animate(now){
+      const elapsed=(now-start)/1000;fx.clearRect(0,0,rect.width,rect.height);fx.globalCompositeOperation='lighter';
+      for(const meteor of meteors){const local=clamp((elapsed-meteor.delay)/1.25,0,1);if(local<=0||local>=1)continue;const progress=ease(local);const x=meteor.sx+(meteor.tx-meteor.sx)*progress;const y=meteor.sy+(meteor.ty-meteor.sy)*progress;streak(x,y,75,Math.sin(local*Math.PI),45)}
+      for(const meteor of ambient){const local=elapsed-meteor.delay;if(local<0||local>1.5)continue;const x=meteor.x+local*meteor.speed;const y=meteor.y+local*meteor.speed*.55;streak(x,y,meteor.length,Math.sin(local/1.5*Math.PI)*.55,285)}
+      for(const particle of particles){const local=clamp((elapsed-particle.delay)/2.65,0,1);if(local<=0)continue;const progress=ease(local);const spiral=(1-progress)*44;const x=particle.sx+(particle.tx-particle.sx)*progress+Math.cos(particle.angle+progress*9)*spiral;const y=particle.sy+(particle.ty-particle.sy)*progress+Math.sin(particle.angle+progress*9)*spiral*.55;fx.shadowColor=`hsl(${particle.hue},100%,70%)`;fx.shadowBlur=local>.88?7:3;fx.fillStyle=`hsla(${particle.hue},100%,80%,${Math.min(1,local*1.6)})`;fx.beginPath();fx.arc(x,y,local>.9?2.1:1.45,0,Math.PI*2);fx.fill()}
+      const textAlpha=clamp((elapsed-3.35)/1.1,0,1)*clamp((8.7-elapsed)/.8,0,1);if(textAlpha>0){fx.save();fx.font=`900 ${fontSize}px system-ui`;fx.textAlign='center';fx.textBaseline='middle';fx.shadowColor='#ff7eb3';fx.shadowBlur=26;const gradient=fx.createLinearGradient(rect.width*.2,0,rect.width*.8,0);gradient.addColorStop(0,`rgba(255,226,122,${textAlpha})`);gradient.addColorStop(.48,`rgba(255,245,255,${textAlpha})`);gradient.addColorStop(.52,`rgba(255,111,164,${textAlpha})`);gradient.addColorStop(1,`rgba(202,154,255,${textAlpha})`);fx.fillStyle=gradient;fx.fillText(phrase,rect.width/2,textTop+buffer.height/2);fx.restore()}
+      fx.shadowBlur=0;fx.globalCompositeOperation='source-over';if(elapsed<9)requestAnimationFrame(animate)
+    }
+    requestAnimationFrame(animate);setTimeout(()=>{openLetter.hidden=false},6500);
   }
 
   openLetter.addEventListener('click',()=>{surprise.hidden=true;archiveLock.hidden=false;document.querySelector('#archive-password').focus()});
