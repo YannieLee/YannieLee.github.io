@@ -1,7 +1,9 @@
 ---
 # the default layout is 'page'
+layout: page-comments
 icon: fas fa-terminal
 order: 4
+comments: true
 ---
 
 # whoami
