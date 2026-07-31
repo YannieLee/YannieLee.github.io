@@ -1,4 +1,4 @@
-# Yannie // Cybersecurity Lab
+# Yanniezinha's Cybersecurity Lab
 
 > Learning how systems break so I can understand how to defend them.
 
