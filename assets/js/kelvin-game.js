@@ -319,9 +319,8 @@
   function extinguishCandles() {
     if(surprise.classList.contains('night'))return;
     cake.classList.add('candles-out');blowButton.disabled=true;blowHint.textContent='Wish made ✦';
-    setTimeout(()=>{surprise.classList.add('night');cakeScene.classList.add('fade')},1600);
-    setTimeout(()=>{cakeScene.hidden=true},2150);
-    setTimeout(()=>{surprise.classList.add('stars-on');finale.hidden=false;launchTextFireworks()},2600);
+    setTimeout(()=>{surprise.classList.add('night')},2600);
+    setTimeout(()=>{cakeScene.hidden=true;surprise.classList.add('stars-on');finale.hidden=false;launchTextFireworks()},3600);
   }
 
   function launchTextFireworks() {
