@@ -326,10 +326,11 @@
   function launchTextFireworks() {
     const fireworks=document.querySelector('#kelvin-fireworks');const fx=fireworks.getContext('2d');const rect=surprise.getBoundingClientRect();const ratio=Math.min(devicePixelRatio||1,2);
     fireworks.width=Math.round(rect.width*ratio);fireworks.height=Math.round(rect.height*ratio);fx.setTransform(ratio,0,0,ratio,0,0);
-    const phrase='YANNIE ♥ KELVIN';const fontSize=Math.max(26,Math.min(76,rect.width/12.3));
-    const buffer=document.createElement('canvas');buffer.width=Math.round(rect.width);buffer.height=Math.round(fontSize*1.7);const bx=buffer.getContext('2d');
-    bx.font=`900 ${fontSize}px system-ui`;bx.textAlign='center';bx.textBaseline='middle';bx.fillStyle='#fff';bx.fillText(phrase,buffer.width/2,buffer.height/2);
-    const pixels=bx.getImageData(0,0,buffer.width,buffer.height).data;const points=[];const step=rect.width<600?5:6;const textTop=rect.height*.31;
+    const lines=['No matter how far we are,','my heart still finds you.'];const fontSize=Math.max(21,Math.min(54,rect.width/15));
+    const buffer=document.createElement('canvas');buffer.width=Math.round(rect.width);buffer.height=Math.round(fontSize*3.1);const bx=buffer.getContext('2d');
+    bx.font=`italic 600 ${fontSize}px Georgia, serif`;bx.textAlign='center';bx.textBaseline='middle';bx.fillStyle='#fff';
+    lines.forEach((line,index)=>bx.fillText(line,buffer.width/2,fontSize*(1+index*1.25)));
+    const pixels=bx.getImageData(0,0,buffer.width,buffer.height).data;const points=[];const step=rect.width<600?4:5;const textTop=Math.max(60,rect.height*.27);
     for(let y=0;y<buffer.height;y+=step)for(let x=0;x<buffer.width;x+=step)if(pixels[(y*buffer.width+x)*4+3]>110)points.push({x,y:y+textTop});
     const particles=points.map((point,index)=>{const angle=index*.31+random(-.4,.4);const radius=random(Math.min(rect.width,rect.height)*.32,Math.max(rect.width,rect.height)*.72);return{sx:rect.width/2+Math.cos(angle)*radius,sy:rect.height*.43+Math.sin(angle)*radius*.62,tx:point.x,ty:point.y,angle,hue:[42,330,285][index%3],delay:random(.4,1.55)}});
     const meteors=Array.from({length:7},(_,index)=>({
@@ -344,12 +345,11 @@
       const elapsed=(now-start)/1000;fx.clearRect(0,0,rect.width,rect.height);fx.globalCompositeOperation='lighter';
       for(const meteor of meteors){const local=clamp((elapsed-meteor.delay)/1.25,0,1);if(local<=0||local>=1)continue;const progress=ease(local);const x=meteor.sx+(meteor.tx-meteor.sx)*progress;const y=meteor.sy+(meteor.ty-meteor.sy)*progress;streak(x,y,75,Math.sin(local*Math.PI),45)}
       for(const meteor of ambient){const local=elapsed-meteor.delay;if(local<0||local>1.5)continue;const x=meteor.x+local*meteor.speed;const y=meteor.y+local*meteor.speed*.55;streak(x,y,meteor.length,Math.sin(local/1.5*Math.PI)*.55,285)}
-      for(const particle of particles){const local=clamp((elapsed-particle.delay)/2.65,0,1);if(local<=0)continue;const progress=ease(local);const spiral=(1-progress)*44;const x=particle.sx+(particle.tx-particle.sx)*progress+Math.cos(particle.angle+progress*9)*spiral;const y=particle.sy+(particle.ty-particle.sy)*progress+Math.sin(particle.angle+progress*9)*spiral*.55;const particleAlpha=Math.min(1,local*1.6)*clamp((4.55-elapsed)/.65,0,1);fx.shadowColor=`hsl(${particle.hue},100%,70%)`;fx.shadowBlur=local>.88?7:3;fx.fillStyle=`hsla(${particle.hue},100%,80%,${particleAlpha})`;fx.beginPath();fx.arc(x,y,local>.9?2.1:1.45,0,Math.PI*2);fx.fill()}
+      for(const particle of particles){const local=clamp((elapsed-particle.delay)/2.65,0,1);if(local<=0)continue;const progress=ease(local);const spiral=(1-progress)*44;const x=particle.sx+(particle.tx-particle.sx)*progress+Math.cos(particle.angle+progress*9)*spiral;const y=particle.sy+(particle.ty-particle.sy)*progress+Math.sin(particle.angle+progress*9)*spiral*.55;const particleAlpha=Math.min(1,local*1.6)*clamp((7.8-elapsed)/.9,0,1);if(local<.94){const tail=18*(1-local)+5;const gradient=fx.createLinearGradient(x-tail,y-tail*.55,x,y);gradient.addColorStop(0,'transparent');gradient.addColorStop(1,`hsla(${particle.hue},100%,78%,${particleAlpha*.65})`);fx.strokeStyle=gradient;fx.lineWidth=1.2;fx.beginPath();fx.moveTo(x-tail,y-tail*.55);fx.lineTo(x,y);fx.stroke()}fx.shadowColor=`hsl(${particle.hue},100%,72%)`;fx.shadowBlur=local>.88?11:6;fx.fillStyle=`hsla(${particle.hue},100%,86%,${particleAlpha})`;fx.beginPath();fx.arc(x,y,local>.9?2:1.35,0,Math.PI*2);fx.fill()}
       fx.shadowBlur=0;fx.globalCompositeOperation='source-over';if(elapsed<9)requestAnimationFrame(animate)
     }
     requestAnimationFrame(animate);
-    setTimeout(()=>{skyTitle.hidden=false},3900);
-    setTimeout(()=>{openLetter.hidden=false},6500);
+    setTimeout(()=>{openLetter.hidden=false},5200);
   }
 
   openLetter.addEventListener('click',()=>{surprise.hidden=true;skyTitle.hidden=true;archiveLock.hidden=false;document.querySelector('#archive-password').focus()});

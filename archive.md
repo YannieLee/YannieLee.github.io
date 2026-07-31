@@ -63,7 +63,7 @@ comments: false
       YANNIE <span>♥</span> KELVIN
     </div>
     <div class="kelvin-finale" id="kelvin-finale" hidden>
-      <p>No matter how far we are, my heart still finds you.</p>
+      <p class="kelvin-finale-caption">No matter how far we are, my heart still finds you.</p>
       <button class="kelvin-primary" id="kelvin-open-letter" type="button" hidden>Enter your little corner</button>
     </div>
   </section>

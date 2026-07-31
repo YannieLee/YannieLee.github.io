@@ -70,6 +70,9 @@
 .kelvin-surprise.night::after{opacity:0;transition:opacity 1s ease}
 .kelvin-surprise.night.stars-on::after{opacity:.35}
 .kelvin-surprise.night:not(.stars-on)::before{z-index:9;opacity:1;background:#000;transition:opacity .35s ease}
+.kelvin-finale{bottom:clamp(5.5rem,15vh,9rem)}
+.kelvin-finale-caption{position:absolute;width:1px;height:1px;padding:0;margin:-1px!important;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:520px){.kelvin-finale{bottom:clamp(5rem,13vh,7rem)}}
 
 /* Private letter reveal and chronological archive. */
 .latest-letter{width:min(42rem,calc(100% - 1.5rem));max-height:min(82vh,760px);padding:0;overflow:visible;border:0;border-radius:26px;color:#392b39;background:transparent;box-shadow:0 30px 90px rgba(0,0,0,.55)}
