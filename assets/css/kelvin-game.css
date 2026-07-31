@@ -22,3 +22,22 @@
 @keyframes kelvin-star-pulse{50%{transform:rotate(10deg) scale(.84)}}@keyframes kelvin-drift{to{transform:translateY(47px)}}@keyframes kelvin-message-reveal{0%{opacity:0;transform:translate(-50%,-40%) scale(.82)}15%,72%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-60%) scale(1.05)}}@keyframes kelvin-star-gather{0%{opacity:0;transform:translate(var(--sx),var(--sy)) rotate(0) scale(.4)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-5%) rotate(540deg) scale(.1)}}@keyframes kelvin-cake-build{to{opacity:1;transform:translateY(0) rotateX(8deg) scale(1)}}@keyframes kelvin-flame{to{transform:translateY(-2px) scale(.86) rotate(4deg)}}@keyframes kelvin-flame-out{to{opacity:0;transform:translateY(-22px) scale(.2)}}@keyframes kelvin-button-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @media(max-width:720px),(pointer:coarse){.kelvin-world{min-height:calc(100svh - 5rem);border-radius:18px}.kelvin-intro,.kelvin-surprise,.archive-lock{min-height:calc(100svh - 5rem)}.kelvin-stage{height:calc(100svh - 10.5rem);min-height:430px}.kelvin-controls{display:grid}.kelvin-help{left:1rem;bottom:4.8rem;transform:none}.kelvin-hud{grid-template-columns:auto 1fr}.kelvin-skip{position:absolute;top:4.9rem;right:.75rem;z-index:3;padding:.4rem}.archive-form{flex-direction:column}.kelvin-cake{transform-origin:center bottom}.kelvin-cake-scene{padding:.25rem}.kelvin-cake-scene h2{margin-bottom:.65rem}}
 @media(prefers-reduced-motion:reduce){.kelvin-stars,.kelvin-stars::before,.kelvin-stars::after,.kelvin-pixel-star,.kelvin-candles i::before{animation:none}.kelvin-primary{transition:none}.kelvin-center-message.show{animation-duration:1.2s}}
+
+/* Keep touch controls below the playfield and make candle blowing feel tangible. */
+.kelvin-candles i::after{position:absolute;top:-21px;left:1px;width:7px;height:7px;border:2px solid rgba(220,220,235,.7);border-radius:50%;content:"";opacity:0}
+.candles-out .kelvin-candles i::before{animation:kelvin-flame-out-soft .7s ease forwards}
+.candles-out .kelvin-candles i::after{animation:kelvin-smoke 1.65s .32s ease-out forwards}
+.candles-out .kelvin-candles i:nth-child(2)::after{animation-delay:.44s}
+.candles-out .kelvin-candles i:nth-child(3)::after{animation-delay:.56s}
+@keyframes kelvin-flame-out-soft{35%{transform:translate(7px,-5px) scale(.72) rotate(24deg)}100%{opacity:0;transform:translate(18px,-12px) scale(.12) rotate(40deg)}}
+@keyframes kelvin-smoke{0%{opacity:0;transform:translate(0,0) scale(.5)}25%{opacity:.75}100%{opacity:0;transform:translate(12px,-38px) scale(2.1)}}
+
+@media(max-width:720px),(pointer:coarse){
+  .kelvin-game{padding-bottom:82px}
+  .kelvin-stage{height:calc(100svh - 15.5rem);min-height:350px}
+  .kelvin-controls{display:block}
+  .kelvin-controls button{width:46px;height:48px}
+  .kelvin-controls button[data-direction=left]{right:55px}
+  .kelvin-controls .kelvin-space-key{width:clamp(86px,24vw,125px);height:44px}
+  .kelvin-help{bottom:1rem}
+}

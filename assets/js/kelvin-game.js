@@ -318,8 +318,8 @@
   function extinguishCandles() {
     if(surprise.classList.contains('night'))return;
     cake.classList.add('candles-out');blowButton.disabled=true;blowHint.textContent='Wish made ✦';
-    setTimeout(()=>{surprise.classList.add('night');cakeScene.classList.add('fade')},700);
-    setTimeout(()=>{cakeScene.hidden=true;finale.hidden=false;launchTextFireworks()},1550);
+    setTimeout(()=>{surprise.classList.add('night');cakeScene.classList.add('fade')},800);
+    setTimeout(()=>{cakeScene.hidden=true;finale.hidden=false;launchTextFireworks()},1800);
   }
 
   function launchTextFireworks() {
