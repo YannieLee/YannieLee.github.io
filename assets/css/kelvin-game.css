@@ -43,3 +43,19 @@
   .kelvin-controls .kelvin-space-key{width:clamp(86px,24vw,125px);height:44px}
   .kelvin-help{bottom:1rem}
 }
+
+/* A quieter, more cinematic finale. */
+#back-to-top{display:none!important}
+.kelvin-surprise.night{background:radial-gradient(circle at 50% 36%,#17152f 0,#080916 43%,#02030a 78%)}
+.kelvin-surprise.night::after{position:absolute;inset:0;z-index:1;content:"";background-image:radial-gradient(circle,rgba(255,255,255,.52) .7px,transparent 1px);background-size:41px 41px;opacity:.35;-webkit-mask-image:linear-gradient(to bottom,#000 0,transparent 78%);mask-image:linear-gradient(to bottom,#000 0,transparent 78%);pointer-events:none}
+.kelvin-sky-title{top:37%;color:#fff8e5;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.85rem,6.3vw,4.6rem);font-weight:600;letter-spacing:.075em;text-shadow:0 2px 5px #000,0 0 14px rgba(255,225,155,.38)}
+.kelvin-sky-title::before{position:absolute;bottom:calc(100% + .85rem);left:50%;width:max-content;transform:translateX(-50%);content:"WRITTEN IN THE STARS";color:rgba(224,215,244,.65);font-family:system-ui,sans-serif;font-size:clamp(.58rem,1.8vw,.72rem);font-weight:700;letter-spacing:.34em}
+.kelvin-sky-title::after{position:absolute;top:calc(100% + 1rem);left:50%;width:min(17rem,65vw);height:1px;transform:translateX(-50%);content:"";background:linear-gradient(90deg,transparent,rgba(255,218,154,.72),transparent)}
+.kelvin-sky-title span{display:inline-block;margin:0 .06em;color:#ff7da9;font-size:.8em;text-shadow:0 0 13px rgba(255,87,145,.65);animation:kelvin-soft-heart 1.8s ease-in-out infinite}
+.kelvin-finale{bottom:clamp(2.3rem,7vh,5rem);width:min(35rem,calc(100% - 3rem));padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}
+.kelvin-finale::before{width:min(12rem,50vw);height:1px;margin-bottom:1.25rem;content:"";background:linear-gradient(90deg,transparent,rgba(217,204,239,.5),transparent)}
+.kelvin-finale p{max-width:29rem;margin:0;color:#e9e4f2;font-family:Georgia,"Times New Roman",serif;font-size:clamp(1rem,3.4vw,1.3rem);font-weight:400;font-style:italic;line-height:1.65;letter-spacing:.015em;text-shadow:0 2px 8px #000}
+.kelvin-finale .kelvin-primary{min-width:0;margin-top:1.35rem;padding:.72rem 1.35rem;border:1px solid rgba(255,220,232,.4);color:#fff4f8;font-size:.9rem;font-weight:650;letter-spacing:.035em;background:linear-gradient(135deg,rgba(255,91,144,.32),rgba(167,103,231,.3));box-shadow:0 8px 28px rgba(0,0,0,.3),inset 0 1px rgba(255,255,255,.14);backdrop-filter:blur(10px)}
+.kelvin-finale .kelvin-primary:hover{box-shadow:0 10px 30px rgba(255,85,145,.18);transform:translateY(-2px)}
+@keyframes kelvin-soft-heart{50%{transform:scale(.9);opacity:.78}}
+@media(max-width:520px){.kelvin-sky-title{top:34%;letter-spacing:.045em}.kelvin-finale{bottom:2.1rem}.kelvin-finale p{max-width:19rem}.kelvin-finale .kelvin-primary{font-size:.84rem}}
