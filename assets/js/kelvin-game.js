@@ -29,6 +29,8 @@
   const wishInput = document.querySelector('#kelvin-wish');
   const blowButton = document.querySelector('#kelvin-blow');
   const blowHint = document.querySelector('#kelvin-blow-hint');
+  const sendWishCheckbox = document.querySelector('#kelvin-send-wish');
+  const wishStatus = document.querySelector('#kelvin-wish-status');
   const keys = new Set();
   const player = { x: 80, y: 0, width: 38, height: 42, vx: 0, vy: 0, grounded: true, airJumpUsed: false, facing: 1 };
   const worldWidth = 2920;
@@ -150,10 +152,13 @@
     ctx.beginPath();ctx.moveTo(-14,-10);ctx.lineTo(-18,-21);ctx.lineTo(-6,-15);ctx.closePath();ctx.fill();
     ctx.beginPath();ctx.moveTo(14,-10);ctx.lineTo(18,-21);ctx.lineTo(6,-15);ctx.closePath();ctx.fill();
     ctx.fillStyle='#3b2037';ctx.beginPath();ctx.arc(-7,-3,2.1,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(7,-3,2.1,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-7.6,-3.8,.75,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(6.4,-3.8,.75,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(255,70,135,.42)';ctx.beginPath();ctx.arc(-12,4,3.6,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(12,4,3.6,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='#ffb3cf';ctx.beginPath();ctx.ellipse(0,7,9,6.5,0,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='#a84c74';ctx.beginPath();ctx.ellipse(-3,7,1.6,2.2,0,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(3,7,1.6,2.2,0,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle='#ff91bd';ctx.lineWidth=3;ctx.beginPath();ctx.arc(-20,8,6,Math.PI*.2,Math.PI*1.8);ctx.stroke();
     ctx.fillStyle='#dc6597';ctx.fillRect(-13,16,7,5);ctx.fillRect(6,16,7,5);
+    ctx.fillStyle='#ffd166';ctx.beginPath();ctx.moveTo(-10,-16);ctx.lineTo(-3,-31);ctx.lineTo(5,-16);ctx.closePath();ctx.fill();ctx.fillStyle='#ff6f91';ctx.beginPath();ctx.arc(-3,-31,3,0,Math.PI*2);ctx.fill();
     ctx.restore();
   }
 
@@ -291,9 +296,21 @@
   }
 
   let blowing=false;
+  async function submitWish() {
+    const wish=wishInput.value.trim();
+    if(!sendWishCheckbox.checked||!wish)return;
+    wishStatus.textContent='Sending your wish privately…';
+    try{
+      const response=await fetch('https://yannie-waline-server.vercel.app/api/wish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({wish,consent:true})});
+      if(!response.ok)throw new Error('send-failed');
+      wishStatus.textContent='Your wish was delivered privately to Yannie ✦';
+      sendWishCheckbox.disabled=true;
+    }catch(_){wishStatus.textContent='The wish stayed on this device because delivery failed.'}
+  }
   blowButton.addEventListener('click',async()=>{
     if(blowing){extinguishCandles();return} blowing=true;
     if(wishInput.value.trim()){try{localStorage.setItem('kelvin-birthday-wish',wishInput.value.trim())}catch(_){}}
+    await submitWish();
     const detected=await listenForBlow();
     if(detected||blowing)extinguishCandles();
   });

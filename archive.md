@@ -51,6 +51,11 @@ comments: false
       <h2 id="surprise-title">Happy Birthday, Kelvin ♡</h2>
       <label class="kelvin-wish-label" for="kelvin-wish">Make a birthday wish</label>
       <textarea id="kelvin-wish" rows="2" maxlength="240" placeholder="Your wish stays only on this device…"></textarea>
+      <label class="kelvin-wish-consent">
+        <input id="kelvin-send-wish" type="checkbox">
+        <span>Privately send this wish to Yannie. It will not be published.</span>
+      </label>
+      <p class="kelvin-wish-status" id="kelvin-wish-status" role="status" aria-live="polite"></p>
       <button class="kelvin-primary" id="kelvin-blow" type="button">Blow out the candles</button>
       <p class="kelvin-blow-hint" id="kelvin-blow-hint">Tap the button—or allow the microphone and blow gently.</p>
     </div>
