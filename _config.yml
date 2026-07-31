@@ -9,18 +9,18 @@ theme: jekyll-theme-chirpy
 lang: en
 
 # Change to your timezone › https://zones.arilyn.cc
-timezone: Asia/Tokyo
+timezone: Asia/Singapore
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: "Yanniezinha's Blog" # the main title
+title: "Yannie // Cybersecurity Lab" # the main title
 
-tagline: Learning cybersecurity, one write-up at a time # it will display as the subtitle
+tagline: Hack. Learn. Defend. Repeat. # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
-  Notes on my journey into cybersecurity, penetration testing,
-  AI security, and everything I learn along the way.
+  Ethical hacking notes, CTF write-ups, penetration-testing labs,
+  AI security experiments, and lessons learned while breaking things responsibly.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -36,12 +36,11 @@ social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: "Yannie"
-  email: example@domain.com # change to your email address
+  email:
   fediverse_handle: # fill in your fediverse handle. E.g. "@username@domain.com"
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username # change to your Twitter homepage
-    - https://github.com/username # change to your GitHub homepage
+    - https://github.com/YannieLee
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
@@ -90,7 +89,7 @@ pageviews:
 #     light — Use the light color scheme
 #     dark — Use the dark color scheme
 #
-theme_mode: # [light | dark]
+theme_mode: dark # [light | dark]
 
 # The CDN endpoint for media resources.
 # Notice that once it is assigned, the CDN url

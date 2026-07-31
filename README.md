@@ -1,39 +1,44 @@
-# Chirpy Starter
+# Yannie // Cybersecurity Lab
 
-[![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy)][gem]&nbsp;
-[![GitHub license](https://img.shields.io/github/license/cotes2020/chirpy-starter.svg?color=blue)][mit]
+> Learning how systems break so I can understand how to defend them.
 
-A minimal, ready-to-use template for creating a blog with the [**Chirpy**][chirpy] Jekyll theme. Get up and running in minutes with all critical files pre-configured.
+This repository contains the source code for my personal cybersecurity blog:
+**[hugsforyannie.win](https://hugsforyannie.win)**.
 
-## Why This Starter Exists
+The site is my public lab notebook for:
 
-When installing Chirpy through [RubyGems.org][gem], Jekyll can only read a subset of theme files (`_data`, `_layouts`, `_includes`, `_sass`, `assets`) and limited `_config.yml` options from the gem. As a result, users cannot enjoy the full out-of-the-box experience that Chirpy offers.
+- ethical hacking and penetration-testing write-ups;
+- CTF solutions and lessons learned;
+- web, network, and system security;
+- AI and LLM security experiments;
+- tools, scripts, notes, and security research.
 
-To unlock all features, the following files must be present in your Jekyll site:
+## Ethics
 
-```shell
-.
-├── _config.yml
-├── _plugins
-├── _tabs
-└── index.html
+Everything documented here is intended for education, defensive research, CTFs,
+or systems I own or have explicit permission to test. Do not use these materials
+to access or damage systems without authorization.
+
+## Tech Stack
+
+The site is built with [Jekyll](https://jekyllrb.com/) and the
+[Chirpy](https://github.com/cotes2020/jekyll-theme-chirpy) theme, then deployed
+with GitHub Pages.
+
+## Run Locally
+
+```bash
+bundle install
+bundle exec jekyll serve
 ```
 
-This starter bundles those files from the latest **Chirpy** release along with a [CD][CD] workflow, so you can start writing immediately.
+Open `http://127.0.0.1:4000` in your browser.
 
-## Usage
+## Contact
 
-Check out the [theme's docs](https://github.com/cotes2020/jekyll-theme-chirpy/wiki).
-
-## Contributing
-
-This repository is automatically updated with new releases from the theme repository. If you encounter any issues or want to contribute to its improvement, please visit the [theme repository][chirpy] to provide feedback.
+Find me on GitHub: [@YannieLee](https://github.com/YannieLee).
 
 ## License
 
-This work is published under [MIT][mit] License.
-
-[gem]: https://rubygems.org/gems/jekyll-theme-chirpy
-[chirpy]: https://github.com/cotes2020/jekyll-theme-chirpy/
-[CD]: https://en.wikipedia.org/wiki/Continuous_deployment
-[mit]: https://github.com/cotes2020/chirpy-starter/blob/master/LICENSE
+The site structure is available under the [MIT License](LICENSE). Unless stated
+otherwise, the writing and original content belong to Yannie.
