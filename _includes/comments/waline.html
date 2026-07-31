@@ -1,0 +1,25 @@
+{% if site.comments.waline.server_url %}
+  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
+
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+    const container = document.createElement('div');
+    container.id = 'waline';
+    container.className = 'mt-5';
+
+    const footer = document.querySelector('footer');
+    footer.insertAdjacentElement('beforebegin', container);
+
+    init({
+      el: '#waline',
+      serverURL: '{{ site.comments.waline.server_url }}',
+      path: window.location.pathname.replace(/\/$/, '') || '/',
+      lang: '{{ site.comments.waline.lang | default: "zh-CN" }}',
+      login: 'disable',
+      requiredMeta: ['nick', 'mail'],
+      dark: 'html[data-bs-theme="dark"]',
+      imageUploader: false
+    });
+  </script>
+{% endif %}

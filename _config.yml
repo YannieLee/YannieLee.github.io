@@ -121,7 +121,7 @@ actions:
 
 comments:
   # Global switch for the post-comment system. Keeping it empty means disabled.
-  provider: giscus # [disqus | utterances | giscus]
+  provider: waline # [disqus | utterances | giscus | waline]
   # The provider options are as follows:
   disqus:
     shortname: # fill with the Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
@@ -140,6 +140,10 @@ comments:
     input_position: top # optional, default to 'bottom'
     lang: zh-CN # optional, default to the value of `site.lang`
     reactions_enabled: 1 # optional, default to the value of `1`
+  # Waline settings. Fill server_url after deploying the Waline server.
+  waline:
+    server_url: https://yannie-waline-server.vercel.app
+    lang: zh-CN
 
 # Self-hosted static assets, optional › https://github.com/cotes2020/chirpy-static-assets
 assets:
